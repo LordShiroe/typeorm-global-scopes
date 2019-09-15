@@ -1,0 +1,42 @@
+{
+  "name": "typeorm-global-scopes",
+  "version": "0.1.0",
+  "description": "This package patch TypeORM to add global scopes to entities.",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "jest --runInBand",
+    "lint": "eslint ./src/**/*.ts"
+  },
+  "keywords": [
+    "typeorm",
+    "decorators",
+    "scope",
+    "typescript",
+    "orm"
+  ],
+  "author": {
+    "name": "Carlos Angarita",
+    "email": "carlomagno127@gmail.com"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.3",
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
+    "@typescript-eslint/parser": "^2.0.0",
+    "eslint": "^6.3.0",
+    "eslint-config-prettier": "^6.1.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "jest": "^24.9.0",
+    "prettier": "^1.18.2",
+    "ts-jest": "^24.0.2",
+    "typeorm": "^0.2.8",
+    "typescript": "^3.3.3333"
+  },
+  "peerDependencies": {
+    "typeorm": "^0.2.18"
+  },
+  "dependencies": {
+    "mysql": "^2.17.1"
+  }
+}
