@@ -1,8 +1,8 @@
 import { Post } from './entities/Post'
 import { Connection, Equal } from 'typeorm'
 import { createTestingConnections, closeTestingConnections } from './util/testUtils'
-import { patchSelectQueryBuilder } from '../src/patch-select-query-builder'
 import { getPosts } from './util/getPosts'
+import { patchSelectQueryBuilder } from '../src'
 
 describe('query using manager', () => {
   patchSelectQueryBuilder()

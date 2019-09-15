@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm'
-import { GlobalScopes } from '../../src/GlobalScopes'
+import { GlobalScopes } from '../../src'
 import { Post } from './Post'
 
 @GlobalScopes<Comment>([

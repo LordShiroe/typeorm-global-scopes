@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, BeforeUpdate, OneToMany } from 'typeorm'
 import { Comment } from './Comment'
-import { GlobalScopes } from '../../src/GlobalScopes'
+import { GlobalScopes } from '../../src'
 
 @GlobalScopes<Post>([
   (qb, alias) => qb.andWhere(`${alias}.author=:author`, { author: 'Carlos' })

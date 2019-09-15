@@ -1,9 +1,8 @@
 import { Post } from './entities/Post'
 import { Connection, Equal } from 'typeorm'
 import { createTestingConnections, closeTestingConnections } from './util/testUtils'
-import { patchSelectQueryBuilder } from '../src/patch-select-query-builder'
 import { getPosts } from './util/getPosts'
-import { unscoped } from '../src/GlobalScopes'
+import { patchSelectQueryBuilder, unscoped } from '../src'
 
 describe('deactivates global scope', () => {
   patchSelectQueryBuilder()

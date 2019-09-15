@@ -1,7 +1,7 @@
 import { Post } from './entities/Post'
 import { Connection, Equal } from 'typeorm'
 import { createTestingConnections, closeTestingConnections } from './util/testUtils'
-import { patchSelectQueryBuilder } from '../src/patch-select-query-builder'
+import { patchSelectQueryBuilder } from '../src'
 import { PostRepository } from './repositories/PostRepository'
 import { getPosts } from './util/getPosts'
 

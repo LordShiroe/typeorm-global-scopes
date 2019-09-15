@@ -2,7 +2,7 @@ import { Post } from './entities/Post'
 import { Comment } from './entities/Comment'
 import { Connection } from 'typeorm'
 import { createTestingConnections, closeTestingConnections } from './util/testUtils'
-import { patchSelectQueryBuilder } from '../src/patch-select-query-builder'
+import { patchSelectQueryBuilder } from '../src'
 import { getPosts } from './util/getPosts'
 
 describe('query using query builder', () => {
