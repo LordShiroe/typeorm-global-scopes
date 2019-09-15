@@ -1,35 +1,29 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  BeforeUpdate,
-  OneToMany
-} from "typeorm";
-import { Comment } from "./Comment";
-import { GlobalScopes } from "../../src/GlobalScopes";
+import { Entity, PrimaryGeneratedColumn, Column, BeforeUpdate, OneToMany } from 'typeorm'
+import { Comment } from './Comment'
+import { GlobalScopes } from '../../src/GlobalScopes'
 
-@GlobalScopes([
-  (qb, alias) => qb.andWhere(`${alias}.author=:author`, { author: "Carlos" })
+@GlobalScopes<Post>([
+  (qb, alias) => qb.andWhere(`${alias}.author=:author`, { author: 'Carlos' })
 ])
 @Entity()
 export class Post {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number
 
   @Column()
-  title: string;
+  title: string
 
   @Column()
-  text: string;
+  text: string
 
   @Column()
-  author: string;
+  author: string
 
   @OneToMany(type => Comment, comment => comment.post)
-  comments: Comment[];
+  comments: Comment[]
 
   @BeforeUpdate()
   beforeUpdate() {
-    this.title = this.title.trim();
+    this.title = this.title.trim()
   }
 }

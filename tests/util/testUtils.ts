@@ -10,9 +10,9 @@ import {
   NamingStrategyInterface,
   PromiseUtils,
   createConnections
-} from "typeorm";
-import { PostgresDriver } from "typeorm/driver/postgres/PostgresDriver";
-import { SqlServerDriver } from "typeorm/driver/sqlserver/SqlServerDriver";
+} from 'typeorm'
+import { PostgresDriver } from 'typeorm/driver/postgres/PostgresDriver'
+import { SqlServerDriver } from 'typeorm/driver/sqlserver/SqlServerDriver'
 
 /**
  * Interface in which data is stored in ormconfig.json of the project.
@@ -21,13 +21,13 @@ export type TestingConnectionOptions = ConnectionOptions & {
   /**
    * Indicates if this connection should be skipped.
    */
-  skip?: boolean;
+  skip?: boolean
 
   /**
    * If set to true then tests for this driver wont run until implicitly defined "enabledDrivers" section.
    */
-  disabledIfNotEnabledImplicitly?: boolean;
-};
+  disabledIfNotEnabledImplicitly?: boolean
+}
 
 /**
  * Options used to create a connection for testing purposes.
@@ -37,59 +37,59 @@ export interface TestingOptions {
    * Dirname of the test directory.
    * If specified, entities will be loaded from that directory.
    */
-  __dirname?: string;
+  __dirname?: string
 
   /**
    * Connection name to be overridden.
    * This can be used to create multiple connections with single connection configuration.
    */
-  name?: string;
+  name?: string
 
   /**
    * List of enabled drivers for the given test suite.
    */
-  enabledDrivers?: DatabaseType[];
+  enabledDrivers?: DatabaseType[]
 
   /**
    * Entities needs to be included in the connection for the given test suite.
    */
-  entities?: (string | Function | EntitySchema<any>)[];
+  entities?: (string | Function | EntitySchema<any>)[]
 
   /**
    * Migrations needs to be included in connection for the given test suite.
    */
-  migrations?: string[];
+  migrations?: string[]
 
   /**
    * Subscribers needs to be included in the connection for the given test suite.
    */
-  subscribers?: string[] | Function[];
+  subscribers?: string[] | Function[]
 
   /**
    * Indicates if schema sync should be performed or not.
    */
-  schemaCreate?: boolean;
+  schemaCreate?: boolean
 
   /**
    * Indicates if schema should be dropped on connection setup.
    */
-  dropSchema?: boolean;
+  dropSchema?: boolean
 
   /**
    * Enables or disables logging.
    */
-  logging?: boolean;
+  logging?: boolean
 
   /**
    * Schema name used for postgres driver.
    */
-  schema?: string;
+  schema?: string
 
   /**
    * Naming strategy defines how auto-generated names for such things like table name, or table column gonna be
    * generated.
    */
-  namingStrategy?: NamingStrategyInterface;
+  namingStrategy?: NamingStrategyInterface
 
   /**
    * Schema name used for postgres driver.
@@ -104,31 +104,31 @@ export interface TestingOptions {
          * - "mongodb" means cached values will be stored in mongodb database. You must provide mongodb connection options.
          * - "redis" means cached values will be stored inside redis. You must provide redis connection options.
          */
-        type?: "database" | "redis";
+        type?: 'database' | 'redis'
 
         /**
          * Used to provide mongodb / redis connection options.
          */
-        options?: any;
+        options?: any
 
         /**
          * If set to true then queries (using find methods and QueryBuilder's methods) will always be cached.
          */
-        alwaysEnabled?: boolean;
+        alwaysEnabled?: boolean
 
         /**
          * Time in milliseconds in which cache will expire.
          * This can be setup per-query.
          * Default value is 1000 which is equivalent to 1 second.
          */
-        duration?: number;
-      };
+        duration?: number
+      }
 
   /**
    * Options that may be specific to a driver.
    * They are passed down to the enabled drivers.
    */
-  driverSpecific?: Object;
+  driverSpecific?: Object
 }
 
 /**
@@ -149,10 +149,10 @@ export function setupSingleTestingConnection(
     cache: options.cache,
     schema: options.schema ? options.schema : undefined,
     namingStrategy: options.namingStrategy ? options.namingStrategy : undefined
-  });
-  if (!testingConnections.length) return undefined;
+  })
+  if (!testingConnections.length) return undefined
 
-  return testingConnections[0];
+  return testingConnections[0]
 }
 
 /**
@@ -160,13 +160,13 @@ export function setupSingleTestingConnection(
  */
 export function getTypeOrmConfig(): TestingConnectionOptions[] {
   try {
-    return require(__dirname + "/../../ormconfig.json");
+    return require(__dirname + '/../../ormconfig.json')
   } catch (err) {
     throw new Error(
       `Cannot find ormconfig.json file in the root of the project. To run tests please create ormconfig.json file` +
         ` in the root of the project (near ormconfig.json.dist, you need to copy ormconfig.json.dist into ormconfig.json` +
         ` and change all database settings to match your local environment settings).`
-    );
+    )
   }
 }
 
@@ -174,60 +174,48 @@ export function getTypeOrmConfig(): TestingConnectionOptions[] {
  * Creates a testing connections options based on the configuration in the ormconfig.json
  * and given options that can override some of its configuration for the test-specific use case.
  */
-export function setupTestingConnections(
-  options?: TestingOptions
-): ConnectionOptions[] {
-  const ormConfigConnectionOptionsArray = getTypeOrmConfig();
+export function setupTestingConnections(options?: TestingOptions): ConnectionOptions[] {
+  const ormConfigConnectionOptionsArray = getTypeOrmConfig()
 
   if (!ormConfigConnectionOptionsArray.length)
     throw new Error(
       `No connections setup in ormconfig.json file. Please create configurations for each database type to run tests.`
-    );
+    )
 
   return ormConfigConnectionOptionsArray
     .filter(connectionOptions => {
-      if (connectionOptions.skip === true) return false;
+      if (connectionOptions.skip === true) return false
 
       if (options && options.enabledDrivers && options.enabledDrivers.length)
-        return options.enabledDrivers.indexOf(connectionOptions.type!) !== -1; // ! is temporary
+        return options.enabledDrivers.indexOf(connectionOptions.type!) !== -1 // ! is temporary
 
-      if (connectionOptions.disabledIfNotEnabledImplicitly === true)
-        return false;
+      if (connectionOptions.disabledIfNotEnabledImplicitly === true) return false
 
-      return true;
+      return true
     })
     .map(connectionOptions => {
-      let newOptions: any = Object.assign(
-        {},
-        connectionOptions as ConnectionOptions,
-        {
-          name: options && options.name ? options.name : connectionOptions.name,
-          entities: options && options.entities ? options.entities : [],
-          migrations: options && options.migrations ? options.migrations : [],
-          subscribers:
-            options && options.subscribers ? options.subscribers : [],
-          dropSchema:
-            options && options.dropSchema !== undefined
-              ? options.dropSchema
-              : false,
-          cache: options ? options.cache : undefined
-        }
-      );
+      let newOptions: any = Object.assign({}, connectionOptions as ConnectionOptions, {
+        name: options && options.name ? options.name : connectionOptions.name,
+        entities: options && options.entities ? options.entities : [],
+        migrations: options && options.migrations ? options.migrations : [],
+        subscribers: options && options.subscribers ? options.subscribers : [],
+        dropSchema:
+          options && options.dropSchema !== undefined ? options.dropSchema : false,
+        cache: options ? options.cache : undefined
+      })
       if (options && options.driverSpecific)
-        newOptions = Object.assign({}, options.driverSpecific, newOptions);
-      if (options && options.schemaCreate)
-        newOptions.synchronize = options.schemaCreate;
-      if (options && options.schema) newOptions.schema = options.schema;
-      if (options && options.logging !== undefined)
-        newOptions.logging = options.logging;
+        newOptions = Object.assign({}, options.driverSpecific, newOptions)
+      if (options && options.schemaCreate) newOptions.synchronize = options.schemaCreate
+      if (options && options.schema) newOptions.schema = options.schema
+      if (options && options.logging !== undefined) newOptions.logging = options.logging
       if (options && options.__dirname)
-        newOptions.entities = [options.__dirname + "/entity/*{.js,.ts}"];
+        newOptions.entities = [options.__dirname + '/entity/*{.js,.ts}']
       if (options && options.__dirname)
-        newOptions.migrations = [options.__dirname + "/migration/*{.js,.ts}"];
+        newOptions.migrations = [options.__dirname + '/migration/*{.js,.ts}']
       if (options && options.namingStrategy)
-        newOptions.namingStrategy = options.namingStrategy;
-      return newOptions;
-    });
+        newOptions.namingStrategy = options.namingStrategy
+      return newOptions
+    })
 }
 
 /**
@@ -237,50 +225,49 @@ export function setupTestingConnections(
 export async function createTestingConnections(
   options?: TestingOptions
 ): Promise<Connection[]> {
-  const connections = await createConnections(setupTestingConnections(options));
+  const connections = await createConnections(setupTestingConnections(options))
   await Promise.all(
     connections.map(async connection => {
       // create new databases
-      const databases: string[] = [];
+      const databases: string[] = []
       connection.entityMetadatas.forEach(metadata => {
         if (metadata.database && databases.indexOf(metadata.database) === -1)
-          databases.push(metadata.database);
-      });
+          databases.push(metadata.database)
+      })
 
-      const queryRunner = connection.createQueryRunner();
+      const queryRunner = connection.createQueryRunner()
       await PromiseUtils.runInSequence(databases, database =>
         queryRunner.createDatabase(database, true)
-      );
+      )
 
       // create new schemas
       if (
         connection.driver instanceof PostgresDriver ||
         connection.driver instanceof SqlServerDriver
       ) {
-        const schemaPaths: string[] = [];
+        const schemaPaths: string[] = []
         connection.entityMetadatas
           .filter(entityMetadata => !!entityMetadata.schemaPath)
           .forEach(entityMetadata => {
             const existSchemaPath = schemaPaths.find(
               path => path === entityMetadata.schemaPath
-            );
-            if (!existSchemaPath) schemaPaths.push(entityMetadata.schemaPath!);
-          });
+            )
+            if (!existSchemaPath) schemaPaths.push(entityMetadata.schemaPath!)
+          })
 
-        const schema = connection.driver.options.schema;
-        if (schema && schemaPaths.indexOf(schema) === -1)
-          schemaPaths.push(schema);
+        const schema = connection.driver.options.schema
+        if (schema && schemaPaths.indexOf(schema) === -1) schemaPaths.push(schema)
 
         await PromiseUtils.runInSequence(schemaPaths, schemaPath =>
           queryRunner.createSchema(schemaPath, true)
-        );
+        )
       }
 
-      await queryRunner.release();
+      await queryRunner.release()
     })
-  );
+  )
 
-  return connections;
+  return connections
 }
 
 /**
@@ -293,34 +280,31 @@ export function closeTestingConnections(connections: Connection[]) {
         ? connection.dropDatabase().then(_ => connection.close())
         : undefined
     )
-  );
+  )
 }
 
 /**
  * Reloads all databases for all given connections.
  */
 export function reloadTestingDatabases(connections: Connection[]) {
-  return Promise.all(
-    connections.map(connection => connection.synchronize(true))
-  );
+  return Promise.all(connections.map(connection => connection.synchronize(true)))
 }
 
 /**
  * Generates random text array with custom length.
  */
 export function generateRandomText(length: number): string {
-  let text = "";
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let text = ''
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 
   for (let i = 0; i <= length; i++)
-    text += characters.charAt(Math.floor(Math.random() * characters.length));
+    text += characters.charAt(Math.floor(Math.random() * characters.length))
 
-  return text;
+  return text
 }
 
 export function sleep(ms: number): Promise<void> {
   return new Promise<void>(ok => {
-    setTimeout(ok, ms);
-  });
+    setTimeout(ok, ms)
+  })
 }

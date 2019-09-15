@@ -1,25 +1,24 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
-import { GlobalScopes } from "../../src/GlobalScopes";
-import { Post } from "./Post";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm'
+import { GlobalScopes } from '../../src/GlobalScopes'
+import { Post } from './Post'
 
-@GlobalScopes([
-  (qb, alias) =>
-    qb.andWhere(`${alias}.isVisible=:isVisible`, { isVisible: true })
+@GlobalScopes<Comment>([
+  (qb, alias) => qb.andWhere(`${alias}.isVisible=:isVisible`, { isVisible: true })
 ])
 @Entity()
 export class Comment {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number
 
   @Column()
-  author: string;
+  author: string
 
   @Column()
-  text: string;
+  text: string
 
   @ManyToOne(type => Post, post => post.comments)
-  post: Post;
+  post: Post
 
   @Column()
-  isVisible: boolean;
+  isVisible: boolean
 }
