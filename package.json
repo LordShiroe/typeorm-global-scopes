@@ -8,6 +8,10 @@
     "lint": "eslint ./src/**/*.ts",
     "build": "rimraf ./dist && tsc -p tsconfig.build.json"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LordShiroe/typeorm-global-scopes"
+  },
   "keywords": [
     "typeorm",
     "decorators",
