@@ -2,6 +2,18 @@
 
 A decorator for [TypeORM](https://github.com/typeorm/typeorm) entities that allow default global query scopes to entities. It works by patching TypeORM's SelectQueryBuilder so it executes the default scopes that you have defined. This package was created because TypeORM currently does not support scopes on entity definition and it's highly experimental.
 
+## Installation
+
+```shell
+npm install --save typeorm-global-scopes
+```
+
+Or
+
+```shell
+yarn add typeorm-global-scopes
+```
+
 ## Usage
 
 ### Initialization
