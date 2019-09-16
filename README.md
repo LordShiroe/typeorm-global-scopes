@@ -63,5 +63,7 @@ SELECT `Post`.`id` AS `Post_id`, `Post`.`title` AS `Post_title`, `Post`.`text` A
 If you need to disable the scope you can use the helper function `unscoped` to disable the global scopes for that query.
 
 ```typescript
+import { unscoped } from 'typeorm-global-scopes'
+
 getManager().find(unscoped(connection, Post), { where: { title: Equal('The title') } })
 ```
