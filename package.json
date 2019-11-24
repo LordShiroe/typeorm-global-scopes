@@ -1,6 +1,6 @@
 {
   "name": "typeorm-global-scopes",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "This package patches TypeORM to add global scopes to entities.",
   "main": "dist/index.js",
   "scripts": {
