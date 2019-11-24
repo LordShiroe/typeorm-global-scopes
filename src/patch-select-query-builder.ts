@@ -17,7 +17,7 @@ class MySelectQB<Entity extends ObjectLiteral> extends SelectQueryBuilder<Entity
    */
   protected ___patchScopes___(): void {
     const table = this.expressionMap.mainAlias
-    if (!table) return
+    if (!table || !table.hasMetadata) return
     const metadata = table.metadata.tableMetadataArgs as ScopedTableMetadata<Entity>
     if (metadata.scopes && metadata.scopesEnabled) {
       metadata.scopes.forEach(scope => scope(this, table.name))
